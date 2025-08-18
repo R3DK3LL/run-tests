@@ -1,0 +1,34 @@
+{
+  "patterns": [
+    "timeout_validation",
+    "edge_case_detection",
+    "performance_check",
+    "memory_validation"
+  ],
+  "languages": [
+    "python",
+    "javascript",
+    "go",
+    "rust"
+  ],
+  "authors": [
+    {
+      "name": "TestBot",
+      "email": "testbot@sys.test"
+    },
+    {
+      "name": "Validator",
+      "email": "val@sys.test"
+    },
+    {
+      "name": "CheckEngine",
+      "email": "check@sys.test"
+    }
+  ],
+  "categories": [
+    "unit",
+    "integration",
+    "performance",
+    "stress"
+  ]
+}
