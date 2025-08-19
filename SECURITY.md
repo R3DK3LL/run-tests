@@ -101,3 +101,6 @@ This project implements security measures appropriate for:
 
 **Note**: This tool is designed for controlled testing environments. Production deployment requires additional security hardening and risk assessment.
 
+## Security Considerations
+This repository contains automation tools that interact with git repositories. 
+Always run in isolated test environments when possible.
