@@ -56,14 +56,14 @@ class MultiAchievementEngine:
             )
 
         # Immediately resolve with commit
-        subprocess.run(f"git add {issue_file}", shell=True)
+        subprocess.run(["git", "add", issue_file], check=True)
 
         elapsed = time.time() - start_time
         subprocess.run(
-            f'git commit -m "quickdraw: resolve critical issue {timestamp} in {elapsed:.1f}s"',
-            shell=True,
+            ["git", "commit", "-m", f"quickdraw: resolve critical issue {timestamp} in {elapsed:.1f}s"],
+            check=True,
         )
-        subprocess.run("git push", shell=True)
+        subprocess.run(["git", "push"], check=True)
 
         print(f"Quickdraw cycle completed in {elapsed:.1f} seconds")
 
@@ -137,12 +137,12 @@ def validate_{topic}(execution_trace):
 """
             )
 
-        subprocess.run(f"git add {discussion_file}", shell=True)
+        subprocess.run(["git", "add", discussion_file], check=True)
         subprocess.run(
-            f'git commit -m "discussion: {topic} technical analysis and solution"',
-            shell=True,
+            ["git", "commit", "-m", f"discussion: {topic} technical analysis and solution"],
+            check=True,
         )
-        subprocess.run("git push", shell=True)
+        subprocess.run(["git", "push"], check=True)
 
         print("Galaxy Brain discussion created")
 
@@ -179,7 +179,7 @@ Focus areas: Technical excellence, helpful contributions, innovation
 """
             )
 
-        subprocess.run(f"git add {reaction_file}", shell=True)
+        subprocess.run(["git", "add", reaction_file], check=True)
         subprocess.run(
             f'git commit -m "community: positive engagement and reactions {timestamp}"',
             shell=True,
