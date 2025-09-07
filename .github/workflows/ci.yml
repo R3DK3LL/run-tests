@@ -29,7 +29,8 @@ jobs:
     - name: Security scan
       run: |
         bandit -r . -ll --exclude=./venv,./**/venv/**,./*venv*
-        safety scan --non-interactive
+        pip install pip-audit
+        pip-audit
     
     - name: Code quality
       run: |
