@@ -138,16 +138,19 @@ timestamp: {datetime.now().isoformat()}
                 ]
             )
 
-            subprocess.run(
-                "gh issue list --json number | python3 -c \"import json,sys;print(json.load(sys.stdin)[0]['number'])\"",
-                shell=True,
-                capture_output=True,
-                text=True,
-                cwd=self.repo_path,
-            )
-            subprocess.run(
-                f'gh issue close 1 --comment "resolved"', shell=True, cwd=self.repo_path
-            )
+            try:
+                result1 = subprocess.run(["gh", "issue", "list", "--json", "number"], 
+                                        check=True, capture_output=True, text=True, cwd=self.repo_path)
+                result2 = subprocess.run(["python3", "-c", "import json,sys;print(json.load(sys.stdin)[0]['number'])"], 
+                                        input=result1.stdout, check=True, capture_output=True, text=True)
+            except subprocess.CalledProcessError as e:
+                raise RuntimeError(f"GitHub issue list operation failed: {e.stderr}") from e
+
+            try:
+                subprocess.run(["gh", "issue", "close", "1", "--comment", "resolved"], 
+                               check=True, capture_output=True, text=True, cwd=self.repo_path)
+            except subprocess.CalledProcessError as e:
+                raise RuntimeError(f"Failed to close GitHub issue: {e.stderr}") from e
 
             elapsed = time.time() - start_time
             self.logger.info(f"rapid_resolve: {elapsed:.2f}s")
@@ -231,12 +234,13 @@ timestamp: {datetime.now().isoformat()}
             self.logger.error(f"daily_update failed: {e}")
 
     def exec_git(self, commands):
+        import shlex
         for cmd in commands:
-            result = subprocess.run(
-                cmd, shell=True, cwd=self.repo_path, capture_output=True, text=True
-            )
-            if result.returncode != 0:
-                raise Exception(f"cmd failed: {cmd}")
+            try:
+                cmd_list = shlex.split(cmd) if isinstance(cmd, str) else cmd
+                result = subprocess.run(cmd_list, check=True, cwd=self.repo_path, capture_output=True, text=True)
+            except subprocess.CalledProcessError as e:
+                raise RuntimeError(f"Command execution failed: {e.stderr}") from e
             time.sleep(2)
 
     def gen_repair(self, issue_type):
