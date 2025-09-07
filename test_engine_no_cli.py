@@ -174,12 +174,13 @@ class TestEngine:
             self.logger.error(f"daily_update failed: {e}")
 
     def exec_git(self, commands):
+        import shlex
         for cmd in commands:
-            result = subprocess.run(
-                cmd, shell=True, cwd=self.repo_path, capture_output=True, text=True
-            )
-            if result.returncode != 0:
-                raise Exception(f"cmd failed: {cmd}")
+            try:
+                cmd_list = shlex.split(cmd) if isinstance(cmd, str) else cmd
+                result = subprocess.run(cmd_list, check=True, cwd=self.repo_path, capture_output=True, text=True)
+            except subprocess.CalledProcessError as e:
+                raise RuntimeError(f"Command execution failed: {e.stderr}") from e
             time.sleep(1)
 
     def gen_repair(self, issue_type):
