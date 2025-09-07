@@ -56,14 +56,17 @@ class MultiAchievementEngine:
             )
 
         # Immediately resolve with commit
-        subprocess.run(["git", "add", issue_file], check=True)
-
-        elapsed = time.time() - start_time
-        subprocess.run(
-            ["git", "commit", "-m", f"quickdraw: resolve critical issue {timestamp} in {elapsed:.1f}s"],
-            check=True,
-        )
-        subprocess.run(["git", "push"], check=True)
+        try:
+            subprocess.run(["git", "add", str(issue_file)], check=True, capture_output=True, text=True)
+            
+            elapsed = time.time() - start_time
+            subprocess.run(
+                ["git", "commit", "-m", f"quickdraw: resolve critical issue {timestamp} in {elapsed:.1f}s"],
+                check=True, capture_output=True, text=True
+            )
+            subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Git operation failed in quickdraw: {e.stderr}") from e
 
         print(f"Quickdraw cycle completed in {elapsed:.1f} seconds")
 
@@ -137,12 +140,15 @@ def validate_{topic}(execution_trace):
 """
             )
 
-        subprocess.run(["git", "add", discussion_file], check=True)
-        subprocess.run(
-            ["git", "commit", "-m", f"discussion: {topic} technical analysis and solution"],
-            check=True,
-        )
-        subprocess.run(["git", "push"], check=True)
+        try:
+            subprocess.run(["git", "add", str(discussion_file)], check=True, capture_output=True, text=True)
+            subprocess.run(
+                ["git", "commit", "-m", f"discussion: {topic} technical analysis and solution"],
+                check=True, capture_output=True, text=True
+            )
+            subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Git operation failed in galaxy_brain: {e.stderr}") from e
 
         print("Galaxy Brain discussion created")
 
@@ -179,12 +185,15 @@ Focus areas: Technical excellence, helpful contributions, innovation
 """
             )
 
-        subprocess.run(["git", "add", reaction_file], check=True)
-        subprocess.run(
-            f'git commit -m "community: positive engagement and reactions {timestamp}"',
-            shell=True,
-        )
-        subprocess.run("git push", shell=True)
+        try:
+            subprocess.run(["git", "add", str(reaction_file)], check=True, capture_output=True, text=True)
+            subprocess.run(
+                ["git", "commit", "-m", f"community: positive engagement and reactions {timestamp}"],
+                check=True, capture_output=True, text=True
+            )
+            subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Git operation failed in heart_on_sleeve: {e.stderr}") from e
 
         print("Heart On Your Sleeve reactions documented")
 
@@ -340,12 +349,15 @@ if __name__ == "__main__":
 """
             )
 
-        subprocess.run(f"git add {vault_file}", shell=True)
-        subprocess.run(
-            f'git commit -m "vault: archive-quality execution pattern validator"',
-            shell=True,
-        )
-        subprocess.run("git push", shell=True)
+        try:
+            subprocess.run(["git", "add", str(vault_file)], check=True, capture_output=True, text=True)
+            subprocess.run(
+                ["git", "commit", "-m", "vault: archive-quality execution pattern validator"],
+                check=True, capture_output=True, text=True
+            )
+            subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Git operation failed in arctic_vault: {e.stderr}") from e
 
         print("Arctic Code Vault contribution created")
 
@@ -413,12 +425,15 @@ Created: {timestamp}
 """
             )
 
-        subprocess.run(f"git add {star_file}", shell=True)
-        subprocess.run(
-            f'git commit -m "showcase: star-worthy execution validation infrastructure"',
-            shell=True,
-        )
-        subprocess.run("git push", shell=True)
+        try:
+            subprocess.run(["git", "add", str(star_file)], check=True, capture_output=True, text=True)
+            subprocess.run(
+                ["git", "commit", "-m", "showcase: star-worthy execution validation infrastructure"],
+                check=True, capture_output=True, text=True
+            )
+            subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Git operation failed in starstruck: {e.stderr}") from e
 
         print("Starstruck preparation completed")
 
@@ -450,11 +465,15 @@ Created: {timestamp}
         with open(tracking_file, "w") as f:
             json.dump(progress, f, indent=2)
 
-        subprocess.run(f"git add {tracking_file}", shell=True)
-        subprocess.run(
-            f'git commit -m "achievement: progress tracking {timestamp}"', shell=True
-        )
-        subprocess.run("git push", shell=True)
+        try:
+            subprocess.run(["git", "add", str(tracking_file)], check=True, capture_output=True, text=True)
+            subprocess.run(
+                ["git", "commit", "-m", f"achievement: progress tracking {timestamp}"],
+                check=True, capture_output=True, text=True
+            )
+            subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Git operation failed in achievement_tracking: {e.stderr}") from e
 
         print("Achievement progress tracked")
 
