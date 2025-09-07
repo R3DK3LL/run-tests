@@ -1,5 +1,5 @@
 annotated-types==0.7.0
-anyio==3.7.1
+anyio>=4.4.0
 Authlib==1.6.3
 autoflake==2.3.1
 bandit==1.8.6
