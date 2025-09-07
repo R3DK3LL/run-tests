@@ -29,9 +29,8 @@ jobs:
     - name: Security scan
       run: |
         bandit -r . -ll --exclude=./venv,./**/venv/**,./*venv*
-        safety scan || echo "Dependency vulnerabilities found - continuing"
-        # TODO: Dependency conflict - fastapi 0.104.1 requires anyio<4.0.0, security fix needs anyio>=4.4.0
-        safety scan || echo "Dependency vulnerabilities found - continuing"
+    safety scan
+    safety scan
     
     - name: Code quality
       run: |
